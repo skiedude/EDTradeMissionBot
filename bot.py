@@ -219,8 +219,8 @@ class StationSystemModal(discord.ui.Modal):
     async def callback(self, interaction):
         self.view.data['message_id'] = str(interaction.message.id)
         self.view.data['username'] = f'{interaction.user.name}#{interaction.user.discriminator}'
-        self.view.data['system_name'] = self.children[0].value.title()
-        self.view.data['station_name'] = self.children[1].value.title()
+        self.view.data['system_name'] = self.children[0].value
+        self.view.data['station_name'] = self.children[1].value
         self.view.data['pad_size'] = self.children[2].value.upper()
 
         if await can_we_enable(self.view.data):
@@ -291,10 +291,10 @@ class TradeView(discord.ui.View):
         row = 0,
         options=[
             discord.SelectOption(
-                label="Unload", value='unloading'
+                label="Unload", value='unloading', default=False
             ),
             discord.SelectOption(
-                label="Load", value='loading'
+                label="Load", value='loading', default=False
             ),
         ],
     )
@@ -354,5 +354,14 @@ async def on_ready():
     Make sure the table is created when bot starts
     """
     await create_table(await conn())
+
+@bot.event
+async def on_disconnect():
+    """
+    Close sqlite connection on disconnect, prevent locks
+    """
+    conn = await conn()
+    conn.close()
+
 
 bot.run(config['DISCORD']['bottoken'])
