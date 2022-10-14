@@ -1,0 +1,11 @@
+[DISCORD]
+guildid = ##UPDATE THIS##
+bottoken = ##UPDATE THIS##
+
+[REDDIT]
+main_sr = ##UPDATE THIS##
+main_sr_flair_buy = ##UPDATE THIS##
+main_sr_flair_sell = ##UPDATE THIS##
+secondary_srs = ##UPDATE THIS##
+secondary_flairs_buy = ##UPDATE THIS##
+secondary_flairs_sell = ##UPDATE THIS##
