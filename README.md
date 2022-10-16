@@ -64,8 +64,7 @@ flairs comma separated as well
 type is `Unloading`. If you have 2 secondary subreddits, you should have 2
 flairs comma separated as well
 
-There is sample code in `reddithelper.py` to obtain the flair_ids from any
-subreddit. Eventually this will be put into a new /slash_command
+Use the `/trade flairs subreddit` command to look up flair ids for any subreddit  
 
 ### praw.ini
 ```
@@ -89,6 +88,9 @@ Make sure:
 *  both config files created and updated
 
 Run the following `python3 bot.py`  
-Your bot should now have registered the `/trademission` slash command on your discord. Try it out!
+Your bot should now have registered the `/trade` slash command(s) on your discord. Try it out!  
+
+`/trade mission`  
+`/trade flairs subreddit`
 
 ![demo](demo/demo.gif)

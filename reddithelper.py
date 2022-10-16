@@ -2,7 +2,17 @@ import asyncpraw
 import configparser
 
 
-class RedditPost():
+class RedditBase():
+    """
+    Create common objects needed for all reddit classes
+    """
+    def __init__(self):
+        self.reddit = asyncpraw.Reddit()
+        self.config = configparser.ConfigParser()
+        self.config.read('config.ini')
+
+
+class RedditPost(RedditBase):
     """
     Reddit Post and Crosspost functionality
     Expects a title and body to be passed
@@ -12,9 +22,8 @@ class RedditPost():
         self.msg['reddit_title'] = msg['rt']
         self.msg['reddit_body'] = msg['rb']
         self.mission_type = mission_type
-        self.reddit = asyncpraw.Reddit()
-        self.config = configparser.ConfigParser()
-        self.config.read('config.ini')
+        super().__init__()
+
     
     async def create_post(self):
         """
@@ -49,6 +58,22 @@ class RedditPost():
             secondary_submissions.append(await self.reddit.submission(secondary_submission))
 
         return secondary_submissions
+
+
+class FlairFinder(RedditBase):
+    def __init__(self, subreddit):
+        self.subreddit = subreddit
+        super().__init__()
+
+
+    async def find_flairs(self):
+        flairs = {}
+        subreddit = await self.reddit.subreddit(self.subreddit)
+        
+        async for fd in subreddit.flair.link_templates.user_selectable():
+            flairs[fd['flair_text']] = fd['flair_template_id']
+        return flairs
+
 
 
 # Process to get the flair IDs from any subreddit

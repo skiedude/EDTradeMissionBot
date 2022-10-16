@@ -2,7 +2,7 @@ import discord
 import aiosqlite
 import configparser
 from msghelper import MessageHelper
-from reddithelper import RedditPost
+from reddithelper import RedditPost, FlairFinder
 
 
 config = configparser.ConfigParser()
@@ -340,13 +340,32 @@ class TradeView(discord.ui.View):
         await interaction.response.edit_message(content=None, embed=embed, view=None)
         self.stop()
         
+trade = bot.create_group("trade", "Trade related commands")
 
-@bot.slash_command()
-async def trademission(ctx: discord.ApplicationContext):
+@trade.command(description='Create Trade Mission')
+async def mission(ctx: discord.ApplicationContext):
     """
-    /trademission slash_command creation
+    /trade mission
     """
     await ctx.respond("Fill out the Trade Mission Forms", view=TradeView(), ephemeral=True)
+
+
+@trade.command(description='Flair lookup for a subreddit')
+async def flairs(ctx: discord.ApplicationContext, subreddit):
+    """
+    /trade flairs $subreddit
+    """
+    ff = FlairFinder(subreddit.lower())
+    flair_data = await ff.find_flairs()
+    data = '```\n'
+    for flair in flair_data:
+        data += f'{flair} :: {flair_data[flair]}\n'
+    data += '```'
+    embed = discord.Embed(title=f"Flairs for {subreddit}", color=discord.Color.green())
+    embed.add_field(name='Flair Name | Flair ID', value=data, inline=False)
+
+
+    await ctx.respond(embed=embed, view=None, ephemeral=True)
 
 @bot.event
 async def on_ready():
