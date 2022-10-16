@@ -11,7 +11,7 @@ class MessageHelper():
         reddit_title = (
             f"{self.data['mission_type'].upper()} | {self.data['carrier_name']}"
             f" | {self.data['system_name']} - {self.data['station_name']} ({self.data['pad_size']} pads)"
-            f" | {self.data['commodity']} | {self.data['quantity']} {quantity_type}"
+            f" | {self.data['commodity']} | {self.data['profit']}/t profit | {self.data['quantity']} {quantity_type}"
         )
         return reddit_title
 
